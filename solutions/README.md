@@ -1,19 +1,8 @@
-# Solutions
+# Solution
 
 > [!WARNING]
-> **Try each step on your own first.** You learn input space partitioning by finding the characteristics yourself, and you learn test-driven development by watching your own tests go from red to green. Copying these files makes the run green, but you will miss what the exercise is for, and you will need these ideas for the quiz and the project.
+> **Try on your own first.** You learn to write tests by choosing the inputs yourself and seeing which bugs they catch. Copying this file catches every bug, but you will miss what the exercise is for.
 >
-> Before you open a solution:
-> 1. Read the step's **Stuck?** tips in the main [README](../README.md).
-> 2. Run the bug hunt (`python3 tools/bug_hunt.py`) and read the hints for the bugs you miss.
-> 3. Ask a classmate or the TA.
+> Before you open the solution, run the bug hunt (`python3 tools/bug_hunt.py`), read the hints for the bugs you miss, and ask a classmate or the TA.
 
-If you are still stuck, open **only the part you are stuck on**, read it until you understand it, then close it and write your own version.
-
-| Step | Solution |
-|---|---|
-| 2. Partition the input space | [`TEST_PLAN.md`](TEST_PLAN.md) |
-| 3–4. Write the tests | [`test_rational.py`](test_rational.py): catches all 14 planted bugs |
-| 5. Make the tests pass | [`rational.py`](rational.py) |
-
-`tools/bug_hunt.py` also uses `solutions/rational.py` as the correct implementation that your tests must pass.
+[`test_rational.py`](test_rational.py) is one possible test suite. It catches all 14 planted bugs. If you are still stuck, read only the tests for the method you are stuck on, then close the file and write your own.

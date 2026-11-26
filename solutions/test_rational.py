@@ -1,12 +1,8 @@
-"""One possible test suite for Rational, designed with input space partitioning.
+"""One possible test suite for Rational. It catches all 14 planted bugs.
 
-Characteristics used (see solutions/TEST_PLAN.md):
-  sign of the numerator     negative | zero | positive
-  sign of the denominator   negative | zero | positive
-  form of the fraction      already simplest | reducible | whole number
-  type of the inputs        int | not int
-  relation of x and y       x < y | x == y | x > y
-  the other operand         zero | not zero   (divide)
+The tests pick inputs from different groups: negative, zero and positive
+numbers; fractions that are already simple, can be reduced, or are whole
+numbers; and inputs the methods must reject.
 """
 import pytest
 

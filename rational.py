@@ -9,8 +9,8 @@ A Rational is always stored in its simplest form:
 The arithmetic methods return a NEW Rational and never change the one they
 are called on, so  x.add(y)  leaves x unchanged.
 
-This file is only partly written: the docstrings are the specification.
-Write your tests from them FIRST, then complete the code.
+The class is complete. Your task is to write unit tests for it in
+tests/test_rational.py: read the docstrings to know what each method must do.
 """
 from math import gcd
 
@@ -29,9 +29,13 @@ class Rational:
         Raises TypeError if numerator or denominator is not an int, and
         IllegalRationalError if denominator is 0.
         """
-        # TODO: to be completed. Hint: _simplest_form() does the reducing for you.
-        self.numerator = 0
-        self.denominator = 1
+        if not isinstance(numerator, int) or not isinstance(denominator, int):
+            raise TypeError("numerator and denominator must be int")
+        if denominator == 0:
+            raise IllegalRationalError("denominator cannot be 0")
+        self.numerator = numerator
+        self.denominator = denominator
+        self._simplest_form()
 
     def _simplest_form(self):
         """Reduce the fraction and move the sign to the numerator."""
@@ -44,50 +48,54 @@ class Rational:
 
     def add(self, other):
         """Return self + other as a new Rational."""
-        result = Rational()
-        result.numerator = self.numerator * other.denominator + other.numerator * self.denominator
-        result.denominator = self.denominator * other.denominator
-        result._simplest_form()
-        return result
+        return Rational(self.numerator * other.denominator + other.numerator * self.denominator,
+                        self.denominator * other.denominator)
 
     def subtract(self, other):
         """Return self - other as a new Rational."""
-        # TODO: to be completed
-        return Rational()
+        return Rational(self.numerator * other.denominator - other.numerator * self.denominator,
+                        self.denominator * other.denominator)
 
     def multiply(self, other):
         """Return self * other as a new Rational."""
-        # TODO: to be completed
-        return Rational()
+        return Rational(self.numerator * other.numerator, self.denominator * other.denominator)
 
     def divide(self, other):
         """Return self / other as a new Rational.
 
         Raises ZeroDivisionError if other is zero.
         """
-        # TODO: to be completed
-        return Rational()
+        if other.numerator == 0:
+            raise ZeroDivisionError("cannot divide by zero")
+        return Rational(self.numerator * other.denominator, self.denominator * other.numerator)
 
     def __eq__(self, other):
         """x == y is True if x and y are the same number: Rational(1, 2) == Rational(2, 4).
 
         Comparing with anything that is not a Rational, such as 0.5, gives False.
         """
-        # TODO: to be completed
-        return True
+        if not isinstance(other, Rational):
+            return False
+        return self.numerator == other.numerator and self.denominator == other.denominator
 
     def __hash__(self):
         return hash((self.numerator, self.denominator))
 
     def compare_to(self, other):
         """Return -1 if self < other, 0 if self == other, 1 if self > other."""
-        # TODO: to be completed
-        return -1
+        left = self.numerator * other.denominator
+        right = other.numerator * self.denominator
+        if left < right:
+            return -1
+        if left > right:
+            return 1
+        return 0
 
     def __str__(self):
         """The fraction as text: "1/2", "-3/4". Whole numbers have no denominator: "5", "0", "-2"."""
-        # TODO: to be completed
-        return ""
+        if self.denominator == 1:
+            return str(self.numerator)
+        return f"{self.numerator}/{self.denominator}"
 
     def __repr__(self):
         return f"Rational({self.numerator}, {self.denominator})"

@@ -5,7 +5,7 @@
 First, your tests run against a CORRECT Rational: they must all pass, or a
 test expects something the specification does not say. Then they run
 against each buggy version. A bug is CAUGHT when at least one test fails.
-For each bug you miss, a hint tells you which partition of the input space
+For each bug you miss, a hint tells you which case of the input
 your tests do not cover yet.
 
 This is mutation testing (lecture) with hand-made mutants. Do not read the
@@ -53,9 +53,9 @@ def run_tests(impl, show_failures=False):
 
 def main():
     print("Your tests against a correct Rational ...", end=" ", flush=True)
-    if not run_tests("solutions.rational", show_failures=False):
+    if not run_tests("rational", show_failures=False):
         print("SOME FAIL\n")
-        run_tests("solutions.rational", show_failures=True)
+        run_tests("rational", show_failures=True)
         print("\nThese tests expect something the specification (the docstrings in")
         print("rational.py) does not say. Fix them first, then run the bug hunt again.")
         return 1
@@ -72,7 +72,7 @@ def main():
 
     print(f"\nYour tests caught {len(caught)} of {len(HINTS)} bugs.")
     if missed:
-        print("For each missed bug, add a test for the partition in the hint.")
+        print("For each missed bug, add a test for the case in the hint.")
     else:
         print("Every planted bug was caught.")
     return 0
