@@ -48,7 +48,6 @@ The class is only **partly written**. Its docstrings are the specification: what
 | `TEST_PLAN.md` | Your input space partitioning, one table per method. | **Yes**, Step 2. |
 | `tools/bug_hunt.py` | Runs your tests against 14 versions of `Rational` with one planted bug each. | No |
 | `tools/bugs/` | The buggy versions. **Do not read them**: they spoil the exercise. | No |
-| `.github/workflows/tests.yml` | On every push, GitHub runs your tests and the bug hunt. | No |
 | `solutions/` | A test plan, tests and a full `rational.py`, for when you are really stuck. **Try on your own first.** | No |
 | `REFLECTION.md` | Three short questions. | **Yes**, at the end. |
 
@@ -56,7 +55,7 @@ The class is only **partly written**. Its docstrings are the specification: what
 
 ## 0. Setup (10 min)
 
-1. **Fork** this repository (top right on GitHub) into your own account, and enable Actions on your fork: open the **Actions** tab and click **"I understand my workflows, go ahead and enable them"**.
+1. **Fork** this repository (top right on GitHub) into your own account.
 2. Get a terminal with Python. Pick **one** option:
    - **Your machine** (Python 3.9 or newer):
      ```bash
@@ -203,13 +202,12 @@ git commit -m "Test and implement Rational"
 git push
 ```
 
-Open the **Actions** tab of your fork. The **unit-tests** run installs Python, runs your tests against your `rational.py`, and runs the bug hunt. It should be green, and its last step shows how many bugs your tests catch.
-
 > **Stuck?** If `git push` asks for a password, use the Codespace, GitHub Desktop, or sign in with `gh auth login`.
 
 Submit the URL of your fork. Your fork should show:
 
-- [ ] a **green** unit-tests run on the latest commit;
+- [ ] a complete `rational.py` that passes all your tests (`python3 -m pytest`);
+- [ ] tests that catch as many planted bugs as you can (`python3 tools/bug_hunt.py`);
 - [ ] `TEST_PLAN.md` with a table for every method;
 - [ ] tests for every public method of `Rational`;
 - [ ] `REFLECTION.md` filled in.
