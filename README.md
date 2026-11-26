@@ -3,7 +3,7 @@
 * CMKL 41-645 Software Engineering for AI-Enabled Systems
 * Week 8: Quality Assurance Basics
 
-**Individual homework · about 30 minutes**
+**Individual in-class exercise · about 30 minutes**
 
 ## Learning outcomes
 
