@@ -1,0 +1,26 @@
+# Runs your tests on GitHub's machines every time you push.
+name: unit-tests
+
+on:
+  push:
+  workflow_dispatch:      # adds a "Run workflow" button on the Actions tab
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run your tests against your rational.py
+        run: pytest -v
+
+      - name: "Bug hunt: how many planted bugs do your tests catch?"
+        run: python tools/bug_hunt.py
