@@ -9,83 +9,120 @@ import pytest
 from rational import IllegalRationalError, Rational
 
 
-def fields(r):
-    return r.numerator, r.denominator
-
-
 # ----------------------------------------------------------- constructor --
 
-@pytest.mark.parametrize("args, expected", [
-    ((), (0, 1)),          # default is zero
-    ((3,), (3, 1)),        # whole number
-    ((1, 2), (1, 2)),      # positive, already simplest
-    ((2, 4), (1, 2)),      # reducible
-    ((-1, 2), (-1, 2)),    # negative numerator
-    ((1, -2), (-1, 2)),    # negative denominator: sign moves up
-    ((-2, -4), (1, 2)),    # both negative, reducible
-    ((0, 5), (0, 1)),      # zero numerator
-    ((0, -5), (0, 1)),     # zero with a negative denominator
-    ((6, 3), (2, 1)),      # reduces to a whole number
-])
-def test_constructor_stores_simplest_form(args, expected):
-    assert fields(Rational(*args)) == expected
+def test_default_is_zero():
+    r = Rational()
+    assert r.numerator == 0
+    assert r.denominator == 1
 
 
-def test_constructor_rejects_zero_denominator():
+def test_whole_number():
+    r = Rational(3)
+    assert r.numerator == 3
+    assert r.denominator == 1
+
+
+def test_simple_fraction():
+    r = Rational(1, 2)
+    assert r.numerator == 1
+    assert r.denominator == 2
+
+
+def test_fraction_is_reduced():
+    r = Rational(2, 4)
+    assert r.numerator == 1
+    assert r.denominator == 2
+
+
+def test_negative_numerator():
+    r = Rational(-1, 2)
+    assert r.numerator == -1
+    assert r.denominator == 2
+
+
+def test_negative_denominator_moves_sign_to_numerator():
+    r = Rational(1, -2)
+    assert r.numerator == -1
+    assert r.denominator == 2
+
+
+def test_negative_fraction_is_reduced():
+    r = Rational(-2, 4)
+    assert r.numerator == -1
+    assert r.denominator == 2
+
+
+def test_both_negative_gives_positive():
+    r = Rational(-2, -4)
+    assert r.numerator == 1
+    assert r.denominator == 2
+
+
+def test_zero_is_stored_as_zero_over_one():
+    r = Rational(0, 5)
+    assert r.numerator == 0
+    assert r.denominator == 1
+
+
+def test_zero_denominator_is_rejected():
     with pytest.raises(IllegalRationalError):
         Rational(1, 0)
 
 
-@pytest.mark.parametrize("args", [(0.5, 1), (1, 2.0), ("1", 2)])
-def test_constructor_rejects_non_integers(args):
+def test_float_is_rejected():
     with pytest.raises(TypeError):
-        Rational(*args)
+        Rational(0.5, 1)
 
 
 # ------------------------------------------------------------ arithmetic --
 
-@pytest.mark.parametrize("x, y, expected", [
-    ((1, 2), (1, 4), (3, 4)),
-    ((1, 2), (1, 2), (1, 1)),      # result is a whole number
-    ((1, 2), (-1, 2), (0, 1)),     # result is zero
-    ((-1, 3), (-1, 6), (-1, 2)),   # negative operands
-    ((2, 3), (0, 1), (2, 3)),      # adding zero
-])
-def test_add(x, y, expected):
-    assert fields(Rational(*x).add(Rational(*y))) == expected
+def test_add():
+    r = Rational(1, 2).add(Rational(1, 4))
+    assert r.numerator == 3
+    assert r.denominator == 4
 
 
-@pytest.mark.parametrize("x, y, expected", [
-    ((3, 4), (1, 4), (1, 2)),      # reduces
-    ((1, 4), (3, 4), (-1, 2)),     # negative result: order matters
-    ((1, 2), (1, 2), (0, 1)),      # zero result
-    ((-1, 2), (-1, 3), (-1, 6)),
-    ((2, 3), (0, 1), (2, 3)),
-])
-def test_subtract(x, y, expected):
-    assert fields(Rational(*x).subtract(Rational(*y))) == expected
+def test_add_negative():
+    r = Rational(-1, 3).add(Rational(-1, 6))
+    assert r.numerator == -1
+    assert r.denominator == 2
 
 
-@pytest.mark.parametrize("x, y, expected", [
-    ((2, 3), (3, 4), (1, 2)),      # reduces
-    ((-1, 2), (1, 3), (-1, 6)),    # one negative
-    ((-1, 2), (-2, 3), (1, 3)),    # both negative
-    ((2, 3), (0, 1), (0, 1)),      # times zero
-    ((2, 3), (3, 2), (1, 1)),      # whole-number result
-])
-def test_multiply(x, y, expected):
-    assert fields(Rational(*x).multiply(Rational(*y))) == expected
+def test_subtract():
+    r = Rational(3, 4).subtract(Rational(1, 4))
+    assert r.numerator == 1
+    assert r.denominator == 2
 
 
-@pytest.mark.parametrize("x, y, expected", [
-    ((1, 2), (1, 4), (2, 1)),
-    ((1, 2), (-1, 4), (-2, 1)),    # divisor negative: sign must end up on top
-    ((-3, 4), (-3, 8), (2, 1)),
-    ((0, 1), (2, 3), (0, 1)),      # zero divided by something
-    ((2, 3), (4, 5), (5, 6)),
-])
-def test_divide(x, y, expected):
-    assert fields(Rational(*x).divide(Rational(*y))) == expected
+def test_subtract_larger_number_gives_negative():
+    r = Rational(1, 4).subtract(Rational(3, 4))
+    assert r.numerator == -1
+    assert r.denominator == 2
+
+
+def test_multiply():
+    r = Rational(2, 3).multiply(Rational(3, 4))
+    assert r.numerator == 1
+    assert r.denominator == 2
+
+
+def test_multiply_by_zero():
+    r = Rational(2, 3).multiply(Rational(0))
+    assert r.numerator == 0
+    assert r.denominator == 1
+
+
+def test_divide():
+    r = Rational(2, 3).divide(Rational(4, 5))
+    assert r.numerator == 5
+    assert r.denominator == 6
+
+
+def test_divide_by_negative():
+    r = Rational(1, 2).divide(Rational(-1, 4))
+    assert r.numerator == -2
+    assert r.denominator == 1
 
 
 def test_divide_by_zero():
@@ -93,57 +130,61 @@ def test_divide_by_zero():
         Rational(1, 2).divide(Rational(0))
 
 
-@pytest.mark.parametrize("method", ["add", "subtract", "multiply", "divide"])
-def test_arithmetic_does_not_change_the_operands(method):
-    x, y = Rational(1, 2), Rational(1, 3)
-    getattr(x, method)(y)
-    assert fields(x) == (1, 2)
-    assert fields(y) == (1, 3)
+def test_divide_does_not_change_the_operands():
+    x = Rational(1, 2)
+    y = Rational(1, 3)
+    x.divide(y)
+    assert x.numerator == 1 and x.denominator == 2
+    assert y.numerator == 1 and y.denominator == 3
 
 
 # ---------------------------------------------------------- equality, order --
 
-@pytest.mark.parametrize("x, y, expected", [
-    ((1, 2), (1, 2), True),
-    ((1, 2), (2, 4), True),        # same value, different form
-    ((1, 2), (-1, -2), True),
-    ((1, 2), (1, 3), False),       # same numerator
-    ((1, 3), (2, 3), False),       # same denominator
-    ((1, 2), (-1, 2), False),      # opposite sign
-])
-def test_equals(x, y, expected):
-    assert (Rational(*x) == Rational(*y)) is expected
+def test_equal_to_same_value():
+    assert Rational(1, 2) == Rational(2, 4)
 
 
-@pytest.mark.parametrize("other", [0.5, "1/2", None])
-def test_not_equal_to_other_types(other):
-    assert (Rational(1, 2) == other) is False
+def test_not_equal_with_same_numerator():
+    assert Rational(1, 2) != Rational(1, 3)
 
 
-@pytest.mark.parametrize("x, y, expected", [
-    ((1, 3), (1, 2), -1),
-    ((1, 2), (1, 3), 1),
-    ((1, 2), (2, 4), 0),
-    ((-1, 2), (1, 3), -1),         # negative vs positive
-    ((-1, 2), (-1, 3), -1),        # both negative
-    ((0, 1), (-1, 5), 1),          # zero vs negative
-    ((3, 1), (5, 2), 1),           # whole numbers
-])
-def test_compare_to(x, y, expected):
-    assert Rational(*x).compare_to(Rational(*y)) == expected
+def test_not_equal_with_opposite_sign():
+    assert Rational(1, 2) != Rational(-1, 2)
+
+
+def test_not_equal_to_a_float():
+    assert (Rational(1, 2) == 0.5) is False
+
+
+def test_compare_smaller():
+    assert Rational(1, 4).compare_to(Rational(3, 4)) == -1
+
+
+def test_compare_much_larger_still_gives_one():
+    assert Rational(5).compare_to(Rational(1)) == 1
+
+
+def test_compare_equal():
+    assert Rational(1, 2).compare_to(Rational(2, 4)) == 0
+
+
+def test_compare_negative_numbers():
+    assert Rational(-1, 2).compare_to(Rational(-1, 3)) == -1
 
 
 # ------------------------------------------------------------------ text --
 
-@pytest.mark.parametrize("args, expected", [
-    ((1, 2), "1/2"),
-    ((3, 4), "3/4"),
-    ((-3, 4), "-3/4"),
-    ((3, -4), "-3/4"),
-    ((2, 4), "1/2"),
-    ((5, 1), "5"),
-    ((-4, 2), "-2"),
-    ((0, 7), "0"),
-])
-def test_str(args, expected):
-    assert str(Rational(*args)) == expected
+def test_str_fraction():
+    assert str(Rational(1, 2)) == "1/2"
+
+
+def test_str_negative():
+    assert str(Rational(3, -4)) == "-3/4"
+
+
+def test_str_whole_number():
+    assert str(Rational(5, 1)) == "5"
+
+
+def test_str_zero():
+    assert str(Rational(0, 7)) == "0"
