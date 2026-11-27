@@ -10,6 +10,9 @@ A Rational is always stored in its simplest form:
 
 The arithmetic methods return a NEW Rational and never change the one they
 are called on, so  x.add(y)  leaves x unchanged.
+
+The class is complete. Your task is to write unit tests for it in
+tests/test_rational.py: read the docstrings to know what each method must do.
 """
 from math import gcd
 
@@ -77,27 +80,11 @@ class Rational:
             return False
         return self.numerator == other.numerator and self.denominator == other.denominator
 
-    def __hash__(self):
-        return hash((self.numerator, self.denominator))
-
-    def compare_to(self, other):
-        """Return -1 if self < other, 0 if self == other, 1 if self > other."""
-        left = self.numerator * other.denominator
-        right = other.numerator * self.denominator
-        if left < right:
-            return -1
-        if left > right:
-            return 1
-        return 0
-
     def __str__(self):
         """The fraction as text: "1/2", "-3/4". Whole numbers have no denominator: "5", "0", "-2"."""
         if self.denominator == 1:
             return str(self.numerator)
         return f"{self.numerator}/{self.denominator}"
-
-    def __repr__(self):
-        return f"Rational({self.numerator}, {self.denominator})"
 
 
 if __name__ == "__main__":

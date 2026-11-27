@@ -23,8 +23,8 @@ By the end of this exercise, you should be able to:
 >>> y = Rational(1, 3)
 >>> print(x.add(y))
 5/6
->>> x.compare_to(y)
-1
+>>> x == Rational(2, 4)
+True
 ```
 
 Your task is to **write unit tests** for it. The class is correct. But someone will change it one day, and your tests must catch their mistakes.
@@ -34,14 +34,13 @@ Your task is to **write unit tests** for it. The class is correct. But someone w
 | `Rational(numerator=0, denominator=1)` | Creates a fraction and stores it in its simplest form: `Rational(2, -4)` is `-1/2`. Raises `IllegalRationalError` for a zero denominator, `TypeError` for anything that is not an `int`. |
 | `x.add(y)`, `x.subtract(y)`, `x.multiply(y)`, `x.divide(y)` | Return `x + y`, `x - y`, `x * y`, `x / y` as a **new** `Rational`; `x` does not change. `divide` raises `ZeroDivisionError` when `y` is zero. |
 | `x == y` | `True` if both are the same number, so `Rational(1, 2) == Rational(2, 4)`. |
-| `x.compare_to(y)` | `-1`, `0` or `1`. |
 | `str(x)` | `"1/2"`, `"-3/4"`, and for whole numbers just `"5"`, `"0"`. |
 
 | File | What it is | Do you edit it? |
 |---|---|---|
 | `rational.py` | The `Rational` class. Its docstrings say what each method must do. | No |
 | `tests/test_rational.py` | Your tests. One test, `test_add`, is already there. | **Yes** |
-| `tools/bug_hunt.py` | Runs your tests against 14 versions of `Rational` with one planted bug each. | No |
+| `tools/bug_hunt.py` | Runs your tests against 11 versions of `Rational` with one planted bug each. | No |
 | `tools/bugs/` | The buggy versions. **Do not read them**: they spoil the exercise. | No |
 | `solutions/` | One possible set of tests, for when you are really stuck. | No |
 | `REFLECTION.md` | Two short questions. | **Yes**, at the end. |
@@ -75,7 +74,7 @@ Your task is to **write unit tests** for it. The class is correct. But someone w
 
 ## 1. Write tests (15 min)
 
-Read the docstrings in `rational.py`, then add tests to `tests/test_rational.py`: at least one for **every public method** (the constructor, `add`, `subtract`, `multiply`, `divide`, `==`, `compare_to` and `str`).
+Read the docstrings in `rational.py`, then add tests to `tests/test_rational.py`: at least one for **every public method** (the constructor, `add`, `subtract`, `multiply`, `divide`, `==` and `str`).
 
 A test that only tries one easy input catches few bugs. For each method, ask: **which different cases must it handle?** Negative numbers, zero, fractions that can be reduced, whole numbers, and inputs it must reject.
 
@@ -123,16 +122,16 @@ Are your tests good? Run them against code that you **know** is wrong:
 python3 tools/bug_hunt.py
 ```
 
-The script runs your tests against **14 versions of `Rational` with one planted bug each**. A bug is **caught** when at least one of your tests fails on it:
+The script runs your tests against **11 versions of `Rational` with one planted bug each**. A bug is **caught** when at least one of your tests fails on it:
 
 ```text
   bug01  caught
   bug02  missed   hint: constructor: a negative denominator
   ...
-Your tests caught 11 of 14 bugs.
+Your tests caught 8 of 11 bugs.
 ```
 
-Write down how many bugs you caught the first time. Then, for each missed bug, read the hint, add a test for that case, and run the bug hunt again. **Aim to catch all 14.**
+Write down how many bugs you caught the first time. Then, for each missed bug, read the hint, add a test for that case, and run the bug hunt again. **Aim to catch all 11.**
 
 This is **mutation testing** from the lecture, with bugs planted by hand: tests that catch more planted bugs are more likely to catch real ones.
 

@@ -1,4 +1,4 @@
-"""One possible test suite for Rational. It catches all 14 planted bugs.
+"""One possible test suite for Rational. It catches all 11 planted bugs.
 
 The tests pick inputs from different groups: negative, zero and positive
 numbers; fractions that are already simple, can be reduced, or are whole
@@ -138,7 +138,7 @@ def test_divide_does_not_change_the_operands():
     assert y.numerator == 1 and y.denominator == 3
 
 
-# ---------------------------------------------------------- equality, order --
+# -------------------------------------------------------------- equality --
 
 def test_equal_to_same_value():
     assert Rational(1, 2) == Rational(2, 4)
@@ -154,22 +154,6 @@ def test_not_equal_with_opposite_sign():
 
 def test_not_equal_to_a_float():
     assert (Rational(1, 2) == 0.5) is False
-
-
-def test_compare_smaller():
-    assert Rational(1, 4).compare_to(Rational(3, 4)) == -1
-
-
-def test_compare_much_larger_still_gives_one():
-    assert Rational(5).compare_to(Rational(1)) == 1
-
-
-def test_compare_equal():
-    assert Rational(1, 2).compare_to(Rational(2, 4)) == 0
-
-
-def test_compare_negative_numbers():
-    assert Rational(-1, 2).compare_to(Rational(-1, 3)) == -1
 
 
 # ------------------------------------------------------------------ text --

@@ -1,4 +1,4 @@
-"""How good are your tests? Runs them against 14 versions of Rational with one planted bug each.
+"""How good are your tests? Runs them against 11 versions of Rational with one planted bug each.
 
     python3 tools/bug_hunt.py
 
@@ -29,10 +29,7 @@ HINTS = {
     "bug08": "divide: is the number it is called on still the same afterwards?",
     "bug09": "equality: same numerator, different denominator",
     "bug10": "equality: comparing with something that is not a Rational",
-    "bug11": "compare_to: two equal numbers",
-    "bug12": "compare_to: negative numbers",
-    "bug13": "compare_to: the result must be exactly -1, 0 or 1",
-    "bug14": "str: whole numbers",
+    "bug11": "str: whole numbers",
 }
 
 
